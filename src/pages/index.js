@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Link, useStaticQuery, graphql } from "gatsby";
-
+import { useStaticQuery, graphql } from "gatsby";
+import TopNav from "../components/TopNav";
+import Gallery from "../components/Gallery";
 // styles?
 const mainStyles = {
   border: "5px solid black",
@@ -28,16 +29,18 @@ const IndexPage = () => {
     }
   `);
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <main style={mainStyles}>
       <h1>Paul's Blog</h1>
       <h2>Made with Gatsby + Contentful</h2>
+      <TopNav />
+      <Gallery />
     </main>
   );
 };
 
-export default IndexPage;
-
 export const Head = () => <title>Paul's Blog</title>;
+
+export default IndexPage;
