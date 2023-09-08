@@ -15,17 +15,22 @@ const imageStyles: React.CSSProperties = {
 };
 
 interface Artwork {
-  allContentfulArtwork: {
-    edges: Array<{
-      node: {
-        title: string;
-        images: Array<{
+    allContentfulArtwork: {
+      edges: Array<
+      {
+        node: {
+          title: string;
+          images: Array<
+        {
           id: string;
           url: string;
-        }>;
-      };
-    }>;
-  };
+        }
+          >
+        }
+      }
+      >
+    
+  }
 }
 const Gallery = () => {
   const data: Artwork = useStaticQuery(graphql`
@@ -45,11 +50,13 @@ const Gallery = () => {
   `);
 
   return (
-    <React.Fragment>
+      <React.Fragment>
+
       <div style={divStyles}>
         {data.allContentfulArtwork.edges.map((edge, index) => {
           return (
-            <React.Fragment>
+                <React.Fragment>
+
               <p>{edge.node.title}</p>
               <div style={rowStyles}>
                 {edge.node.images &&
@@ -65,7 +72,7 @@ const Gallery = () => {
                     </div>
                   ))}
               </div>
-            </React.Fragment>
+    </React.Fragment>
           );
         })}
       </div>
