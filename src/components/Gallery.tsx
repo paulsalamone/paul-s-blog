@@ -1,20 +1,34 @@
 import * as React from "react";
-import { Link, useStaticQuery, graphql } from "gatsby";
+import { useStaticQuery, graphql } from "gatsby";
 
-const divStyles = {
+const divStyles: React.CSSProperties = {
   margin: "5px",
   padding: "10px",
   width: "fit-content",
 };
-const rowStyles = {
+const rowStyles: React.CSSProperties = {
   display: "flex",
 };
-const imageStyles = {
+const imageStyles: React.CSSProperties = {
   margin: "5px",
   border: "2px solid black",
 };
+
+interface Artwork {
+  allContentfulArtwork: {
+    edges: Array<{
+      node: {
+        title: string;
+        images: Array<{
+          id: string;
+          url: string;
+        }>;
+      };
+    }>;
+  };
+}
 const Gallery = () => {
-  const data = useStaticQuery(graphql`
+  const data: Artwork = useStaticQuery(graphql`
     query {
       allContentfulArtwork {
         edges {
@@ -31,11 +45,11 @@ const Gallery = () => {
   `);
 
   return (
-    <>
+    <React.Fragment>
       <div style={divStyles}>
         {data.allContentfulArtwork.edges.map((edge, index) => {
           return (
-            <>
+            <React.Fragment>
               <p>{edge.node.title}</p>
               <div style={rowStyles}>
                 {edge.node.images &&
@@ -51,11 +65,11 @@ const Gallery = () => {
                     </div>
                   ))}
               </div>
-            </>
+            </React.Fragment>
           );
         })}
       </div>
-    </>
+    </React.Fragment>
   );
 };
 
