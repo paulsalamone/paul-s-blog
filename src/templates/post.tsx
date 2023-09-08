@@ -2,23 +2,57 @@ import * as React from "react";
 import { graphql } from "gatsby";
 import Layout from "../components/Layout";
 import { renderRichText } from "gatsby-source-contentful/rich-text";
-import { INLINES, BLOCKS, MARKS } from "@contentful/rich-text-types";
+import { INLINES, BLOCKS, MARKS, ContentNode, Mark } from "@contentful/rich-text-types";
 import { createContentDigest } from "gatsby-core-utils";
-import { GatsbyImage, getImage } from "gatsby-plugin-image";
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
+import { Helmet } from "react-helmet";
 
-const imageStyle = {
+// INTERFACES / TYPE DECLARATIONS
+interface IContentfulAsset {
+  contentful_id: string;
+  gatsbyImageData: IGatsbyImageData;
+  description: string;
+  title: string;
+}
+
+interface IBlogPostContent {
+  raw: string;
+  references: IContentfulAsset[];
+}
+
+interface IContentfulBlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  internal: any;
+  content: IBlogPostContent;
+}
+
+interface PostProps {
+  data: {
+    contentfulBlogPost: IContentfulBlogPost;
+  }
+}
+
+// STYLES
+const imageStyle: React.CSSProperties = {
   width: "300px",
 };
-const Post = ({ data }) => {
+
+let postTitle: string;
+
+const Post: React.FC<PostProps> = ({ data }) => {
   const { id, slug, title, internal, content } = data.contentfulBlogPost;
   console.log("content.references", content.references);
+const [postTitle, setPostTitle] = React.useState("");
+// setPostTitle(title);
 
   const options = {
     renderMark: {
       [MARKS.BOLD]: (text) => <b className="font-bold">{text}</b>,
     },
     renderNode: {
-      [INLINES.HYPERLINK]: (node, children) => {
+      [INLINES.HYPERLINK]: (node: ContentNode, children: React.ReactNode) => {
         const { uri } = node.data;
         console.log("renderNode node", node);
         return (
@@ -27,14 +61,14 @@ const Post = ({ data }) => {
           </a>
         );
       },
-      [BLOCKS.HEADING_2]: (node, children) => {
+    [BLOCKS.HEADING_2]: (_: ContentNode, children: React.ReactNode) => {
         return <h2>{children}</h2>;
       },
-      [BLOCKS.EMBEDDED_ASSET]: (node) => {
+      [BLOCKS.EMBEDDED_ASSET]: (_: ContentNode) => {
         const { gatsbyImageData, description } = content.references[0];
         return (
-          <GatsbyImage
-            image={getImage(gatsbyImageData)}
+         <GatsbyImage
+            image={gatsbyImageData}
             alt={description}
             style={imageStyle}
           />
@@ -49,15 +83,19 @@ const Post = ({ data }) => {
   };
 
   return (
-    <Layout>
-      <h2>{title}</h2>
-      <div>
-        {renderRichText(jsonContent, options, {
-          references: content.references,
-        })}
-      </div>
-    </Layout>
-  );
+  <Layout>
+        <Helmet>
+      <title>Paul's Website: {data.contentfulBlogPost.title}</title>
+    </Helmet>
+    <h2>{title}</h2>
+    <div>
+     {renderRichText(jsonContent, {
+  ...options,
+  references: content.references
+} as any)}
+    </div>
+  </Layout>
+);
 };
 
 export const query = graphql`
@@ -88,6 +126,5 @@ export const query = graphql`
   }
 `;
 
-export const Head = () => <title>Paul's Website: POST</title>;
 
 export default Post;
