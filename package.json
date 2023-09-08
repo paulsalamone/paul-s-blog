@@ -15,6 +15,9 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "@types/node": "^20.5.9",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
     "dotenv": "^16.3.1",
     "gatsby": "^5.12.3",
     "gatsby-plugin-image": "^3.12.0",
@@ -22,5 +25,8 @@
     "gatsby-transformer-remark": "^6.12.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
   }
 }

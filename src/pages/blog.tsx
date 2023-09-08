@@ -2,18 +2,33 @@ import * as React from "react";
 import { graphql, Link } from "gatsby";
 import Layout from "../components/Layout";
 
-const liStyles = {
+interface BlogProps {
+  data: {
+    allContentfulBlogPost: {
+      edges: Array<{
+        node: {
+          title: string;
+          date: string;
+          id: string;
+          slug: string;
+        };
+      }>;
+    };
+  };
+}
+
+
+const liStyles: React.CSSProperties = {
   lineHeight: "15px",
   fontSize: "16px",
   marginBottom: "20px",
 };
-const dateStyles = {
+const dateStyles: React.CSSProperties = {
   color: "grey",
   fontSize: "10px",
-  //   marginLeft: "20px",
 };
 
-const Blog = ({ data }) => {
+const Blog: React.FC<BlogProps> = ({ data }) => {
   const getDate = (date) => {
     if (date) {
       return date.slice(0, 10);
@@ -22,7 +37,7 @@ const Blog = ({ data }) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Layout>
         <h3>Blog</h3>
         <p>A list of articles:</p>
@@ -40,7 +55,7 @@ const Blog = ({ data }) => {
           ))}
         </ul>
       </Layout>
-    </>
+    </React.Fragment>
   );
 };
 
