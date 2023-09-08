@@ -3,9 +3,11 @@ import { Link, useStaticQuery, graphql } from "gatsby";
 
 const divStyles = {
   margin: "5px",
-  //   border: "1px dotted grey",
   padding: "10px",
   width: "fit-content",
+};
+const rowStyles = {
+  display: "flex",
 };
 const imageStyles = {
   margin: "5px",
@@ -14,31 +16,44 @@ const imageStyles = {
 const Gallery = () => {
   const data = useStaticQuery(graphql`
     query {
-      contentfulArtwork {
-        images {
-          url
+      allContentfulArtwork {
+        edges {
+          node {
+            title
+            images {
+              id
+              url
+            }
+          }
         }
       }
     }
   `);
-  console.log(data.contentfulArtwork.images);
 
-  //   const [images, setImage] = useState()
   return (
     <>
       <div style={divStyles}>
-        <h4>Recent Gallery selections:</h4>
-        {/* {data.contentfulArtwork.images[0].url} */}
-        {data.contentfulArtwork.images.map((image, index) => (
-          <img
-            src={image.url}
-            alt={`image ${index}`}
-            height="80px"
-            width="80px"
-            style={imageStyles}
-            key={index}
-          />
-        ))}
+        {data.allContentfulArtwork.edges.map((edge, index) => {
+          return (
+            <>
+              <p>{edge.node.title}</p>
+              <div style={rowStyles}>
+                {edge.node.images &&
+                  edge.node.images.map((image, index) => (
+                    <div key={index}>
+                      <img
+                        src={image.url}
+                        alt={`image ${index}`}
+                        height="80px"
+                        width="80px"
+                        style={imageStyles}
+                      />
+                    </div>
+                  ))}
+              </div>
+            </>
+          );
+        })}
       </div>
     </>
   );

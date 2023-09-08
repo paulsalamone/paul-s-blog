@@ -16,8 +16,8 @@ const TopNav = () => {
     <>
       <nav style={navStyles}>
         <Link to="/">Home</Link>
-        <Link to="/blog">Blog</Link>
         <Link to="/artwork">Artwork</Link>
+        <Link to="/blog">Blog </Link>
       </nav>
     </>
   );

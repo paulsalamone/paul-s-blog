@@ -1,43 +1,17 @@
 import * as React from "react";
-import { useStaticQuery, graphql } from "gatsby";
-import TopNav from "../components/TopNav";
-import Gallery from "../components/Gallery";
-// styles?
-const mainStyles = {
-  border: "5px solid black",
-  padding: "2rem",
-  height: "88vh",
-  fontFamily: "monospace",
+import Layout from "../components/Layout";
+
+const welcomeStyles = {
+  fontSize: "89px",
 };
 
 const IndexPage = () => {
-  const data = useStaticQuery(graphql`
-    query MyQuery {
-      allContentfulBlogPost {
-        edges {
-          node {
-            id
-            title
-            content {
-              references {
-                id
-              }
-            }
-          }
-        }
-      }
-    }
-  `);
-
-  // console.log(data);
-
   return (
-    <main style={mainStyles}>
-      <h1>Paul's Blog</h1>
-      <h2>Made with Gatsby + Contentful</h2>
-      <TopNav />
-      <Gallery />
-    </main>
+    <>
+      <Layout>
+        <h1 style={welcomeStyles}>Welcome to Paul's Website</h1>
+      </Layout>
+    </>
   );
 };
 
