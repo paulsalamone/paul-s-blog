@@ -39,13 +39,11 @@ const imageStyle: React.CSSProperties = {
   width: "300px",
 };
 
-let postTitle: string;
 
 const Post: React.FC<PostProps> = ({ data }) => {
-  const { id, slug, title, internal, content } = data.contentfulBlogPost;
-  console.log("content.references", content.references);
-const [postTitle, setPostTitle] = React.useState("");
-// setPostTitle(title);
+  const { title, content } = data.contentfulBlogPost;
+
+  // 
 
   const options = {
     renderMark: {
@@ -64,7 +62,16 @@ const [postTitle, setPostTitle] = React.useState("");
     [BLOCKS.HEADING_2]: (_: ContentNode, children: React.ReactNode) => {
         return <h2>{children}</h2>;
       },
+
+
+
+      
       [BLOCKS.EMBEDDED_ASSET]: (_: ContentNode) => {
+
+        for(let i=0; i < content.references.length; i++){
+                  const { gatsbyImageData, description } = content.references[i];
+console.log("+++ gatsbyImageData, description ")
+        }
         const { gatsbyImageData, description } = content.references[0];
         return (
          <GatsbyImage
@@ -73,7 +80,14 @@ const [postTitle, setPostTitle] = React.useState("");
             style={imageStyle}
           />
         );
+
+        
       },
+
+      
+
+
+
     },
   };
 
